@@ -74,11 +74,13 @@ die_unknown(){
     exit 1
 }
 ## find mingw path
-GPP_PATH=$(dirname $(dirname $(which g++)))
+#GPP_PATH=$(dirname $(dirname $(which g++)))
+GPP_INCLUDE=$(g++ -E -x c++ -v /dev/null 2>&1|grep "/include$"|head -n 1)
+GPP_LIB=$(gcc -print-search-dirs | sed '/^lib/b 1;d;:1;s,/[^/.][^/]*/\.\./,/,;t 1;s,:[^=]*=,:;,;s,;,;  ,g' | tr \; \\012|grep "/lib/$"|head -n 1)
 #prefix="/mingw"
-prefix="${GPP_PATH}"
-libdir='${prefix}/lib'
-incdir='${prefix}/include'
+prefix=
+libdir=${GPP_LIB}
+incdir=${GPP_INCLUDE}
 
 ar="ar"
 cc_default="gcc"
@@ -234,4 +236,5 @@ if enabled shared; then
     echo "strip:  $stripping";
 fi
 echo "wine:   $wine $winecmd"
-echo "GPP_PATH: $GPP_PATH"
+echo "GPP_INCLUDE: $GPP_INCLUDE"
+echo "GPP_LIB: $GPP_LIB"
