@@ -4,6 +4,7 @@
 include config.mak
 CFLAGS = -Wall -O3 -fomit-frame-pointer
 LIBS  += -lpsapi
+DESTDIR=
 
 ifeq ($(BUILD_SHARED),yes)
 	TARGETS += libdl.dll
@@ -58,7 +59,7 @@ lib-install: $(LIBS)
 	mkdir -p $(DESTDIR)$(libdir)
 	cp libdl.lib $(DESTDIR)$(libdir)
 
-install: $(INSTALL)
+install: $(TARGETS) $(INSTALL) include-install
 
 test.exe: test.o $(TARGETS)
 	$(CC) -o $@ $< -L. -ldl $(LIBS)

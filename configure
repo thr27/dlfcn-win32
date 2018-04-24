@@ -73,10 +73,13 @@ die_unknown(){
     echo "See $0 --help for available options."
     exit 1
 }
-
-prefix="/mingw"
+## find mingw path
+GPP_PATH=$(dirname $(dirname $(which g++)))
+#prefix="/mingw"
+prefix="${GPP_PATH}"
 libdir='${prefix}/lib'
 incdir='${prefix}/include'
+
 ar="ar"
 cc_default="gcc"
 ranlib="ranlib"
@@ -231,3 +234,4 @@ if enabled shared; then
     echo "strip:  $stripping";
 fi
 echo "wine:   $wine $winecmd"
+echo "GPP_PATH: $GPP_PATH"
